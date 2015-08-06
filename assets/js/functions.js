@@ -81,14 +81,27 @@ var demo = function (canvas, options) {
     stage.addChild(point);
 
     stage.update();
-    //
-    //var handleTick = function handleTick() {
-    //    stage.update();
-    //};
-    //createjs.Ticker.setFPS(30);
-    //createjs.Ticker.addEventListener("tick", handleTick);
+
+    return {
+        setDegree: function (degree) {
+            arc.graphics = createArc(degree);
+            var res = mathFn(util.degree2angle(degree));
+            point.x = res.x;
+            point.y = res.y;
+            stage.update();
+        }
+    }
 };
 
-demo($('#mycanvas').get(0), {
-    degree: 90
+var test = demo($('#mycanvas').get(0), {
+    degree: 0
 });
+
+var temp = {degree: 0};
+createjs.Tween
+    .get(temp)
+    .to({degree: 360}, 10000)
+    .addEventListener("change", function () {
+        var degree = Math.floor(temp.degree);
+        test.setDegree(degree);
+    });
